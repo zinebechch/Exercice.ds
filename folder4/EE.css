@@ -1,0 +1,17 @@
+.task {
+    10 margin: 10px 0;
+    11 padding: 10px;
+    12 background-color: #f4f4f4;
+    13 border-radius: 5px;
+    14 display: flex;
+    15 justify-content: space-between;
+    16 align-items: center;
+    17 }
+    18 .task.completed {
+    19 text-decoration: line-through;
+    20 background-color: #dcdcdc;
+    21 }
+    22 .task button {
+    23 margin-left: 10px;
+
+    

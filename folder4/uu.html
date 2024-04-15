@@ -1,0 +1,122 @@
+gestion-des-transaction.html
+2
+3<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Exercice Transaction</title>
+</head>
+<body>
+
+<h2>Formulaire de Transaction</h2>
+
+<div>
+    <label for="produit">Produit :</label>
+    <select id="produit">
+        <!-- Les options seront ajoutées par JavaScript -->
+    </select>
+    <input type="text" id="nouveauProduit" placeholder="Ajouter un nouveau produit">
+    <button id="ajouterProduit">Ajouter Produit</button>
+</div>
+
+<div>
+    <label for="prix">Prix :</label>
+    <input type="number" id="prix">
+</div>
+
+<div>
+    <label for="quantite">Quantité :</label>
+    <input type="number" id="quantite">
+</div>
+
+<button id="ajouterTransaction">Ajouter Transaction</button>
+
+<h2>Transactions</h2>
+<table id="tableauTransactions">
+    <thead>
+        <tr>
+            <th>Produit</th>
+            <th>Prix</th>
+            <th>Quantité</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Les transactions seront ajoutées par JavaScript -->
+    </tbody>
+</table>
+
+<div>
+    <p>Total des prix: <span id="totalPrix">0</span></p>
+    <p>Nombre de transactions: <span id="nombreTransactions">0</span></p>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const produitSelect = document.getElementById("produit");
+    const nouveauProduitInput = document.getElementById("nouveauProduit");
+    const ajouterProduitBtn = document.getElementById("ajouterProduit");
+    const prixInput = document.getElementById("prix");
+    const quantiteInput = document.getElementById("quantite");
+    const ajouterTransactionBtn = document.getElementById("ajouterTransaction");
+    const tableauTransactions = document.getElementById("tableauTransactions");
+    const totalPrixSpan = document.getElementById("totalPrix");
+    const nombreTransactionsSpan = document.getElementById("nombreTransactions");
+    let transactions = [];
+
+    if (ajouterProduitBtn) {
+        ajouterProduitBtn.addEventListener("click", function() {
+            const nouveauProduit = nouveauProduitInput.value.trim();
+            if (nouveauProduit !== "") {
+                const option = document.createElement("option");
+                option.textContent = nouveauProduit;
+                produitSelect.appendChild(option);
+                nouveauProduitInput.value = ""; 
+            }
+        });
+    }
+
+    if (ajouterTransactionBtn) {
+        ajouterTransactionBtn.addEventListener("click", function() {
+            const produit = produitSelect.value;
+            const prix = parseFloat(prixInput.value);
+            const quantite = parseInt(quantiteInput.value);
+            
+            if (produit && !isNaN(prix) && !isNaN(quantite) && prix > 0 && quantite > 0) {
+                const total = prix * quantite;
+                const transaction = { produit, prix, quantite, total };
+                transactions.push(transaction);
+                afficherTransactions();
+                calculerTotalPrix();
+                nombreTransactionsSpan.textContent = transactions.length;
+                prixInput.value = "";
+                quantiteInput.value = "";
+            } else {
+                alert("Veuillez remplir tous les champs avec des valeurs valides.");
+            }
+        });
+    }
+
+    function afficherTransactions() {
+        tableauTransactions.innerHTML = "";
+        transactions.forEach(transaction => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${transaction.produit}</td>
+                <td>${transaction.prix}</td>
+                <td>${transaction.quantite}</td>
+                <td>${transaction.total}</td>
+            `;
+            tableauTransactions.appendChild(row);
+        });
+    }
+
+    function calculerTotalPrix() {
+        const total = transactions.reduce((acc, transaction) => acc + transaction.total, 0);
+        totalPrixSpan.textContent = total.toFixed(2); 
+    }
+});
+</script>
+
+</body>
+</html>
